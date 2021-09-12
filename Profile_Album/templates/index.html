@@ -1,0 +1,60 @@
+{% include "registration/header.html" %}
+
+
+    <title>Index</title>
+</head>
+<body>
+
+<div class="container">
+  <div class="" id="jumbotron_id">
+  <center><h3>Your Album</h3></center>
+
+{% if user.is_authenticated %}
+
+
+{% else %}
+
+<h3>You are not logged in </h3>
+
+{% endif %}
+
+</div>
+</div>
+</body>
+<script>
+  const colour = ['bg-primary','bg-secondary','bg-success','bg-danger','bg-warning','bg-info','bg-dark']
+  const colour_btn = ['btn-primary','btn-secondary','btn-success','btn-danger','btn-warning','btn-info','btn-dark']
+  fetch("http://localhost:8000/_API_/").then(function(response) {
+    return response.json();
+  }).then(function(data) {
+
+
+    for (let i = 0; i < data.length; i++) {
+      console.log(data.length)
+      var element = document.getElementById('jumbotron_id')
+      if(data.length==0)
+      {
+        var html = `<center><b><p>Your Album is Empty</p></b></center>`
+        element.innerHTML += html
+      }
+      else{
+      var html = `<div class="card text-white ${colour[Math.floor(Math.random() * 7)]} mb-3 m-3 float-left" style="height: 200px;width: 25%;">
+                    <div class="card-header"><b>Album Name : ${data[i]["Album_Name"].slice(0, 10)+'....' }</b></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Description</h5>
+                        <p class="card-text">${data[i]["Album_Description"].slice(0, 25)+'....' }</p>
+                        <a href="Album/${data[i]["Album_Id"]}" class="btn ${colour_btn[Math.floor(Math.random() * 7)]}">Open Album</a>
+                      </div>
+                    </div>
+                  </div>`
+
+      element.innerHTML += html
+    }
+    }
+
+
+  }).catch(function() {
+    console.log("Something went wrong");
+  });
+</script>
+</html>

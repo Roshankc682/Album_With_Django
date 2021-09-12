@@ -1,0 +1,64 @@
+{% include "registration/header.html" %}
+
+
+    <title>Details</title>
+    <link rel="stylesheet" href="/media/style.css" crossorigin="anonymous">
+
+</head>
+<body>
+
+<!-- <div class="" id="container_image"> -->
+  <!-- <div class="" id="jumbotron_id"> -->
+    <center><b><h3 id="name">Album Name</h3></b></center>
+    <center><h5 id="des">Album Desciption</h5></center>
+
+<!-- user.is_authenticated -->
+
+<div class="flex-container" id="jumbotron_id_">
+
+</div>
+<!-- </div> -->
+<!-- </div> -->
+</body>
+
+<script>
+
+  var url = window.location.href
+  var res = url.split("/");
+  var url_send = "http://localhost:8000/_single_/"+res[4]+"/"
+
+  fetch(url_send).then(function(response) {
+    return response.json();
+  }).then(function(data) {
+
+    Name_Al = data["Album_Name"]
+    Des = data["Album_Description"]
+    document.getElementById("name").innerHTML = Name_Al;
+    document.getElementById("des").innerHTML = Des;
+
+  }).catch(function() {
+    console.log("Something went wrong");
+  });
+
+  var url_send = "http://localhost:8000/_single_/?get="+res[4]
+  fetch(url_send).then(function(response) {
+    return response.json();
+  }).then(function(data) {
+
+    for (let i = 0; i < data.length; i++) {
+        //console.log(data[i]["Image"])
+        var element = document.getElementById('jumbotron_id_')
+        var html = `<div class="m-4" style="height:200px;width:200px;">
+                      <a href="${data[i]["Image"]}"><img class="card-img-top" src="${data[i]["Image"]}" alt="Something went wrong" ></a>
+                    </div>`
+        element.innerHTML += html
+
+    }
+
+  }).catch(function() {
+    console.log("Something went wrong");
+  });
+
+
+</script>
+</html>
